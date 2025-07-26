@@ -22,16 +22,16 @@ class MoodConsumer(AsyncWebsocketConsumer):
 
     # Receive message from WebSocket
     async def receive(self, text_data):
-        data = json.loads(text_data)
-
-        # Send message to room group
-        await self.channel_layer.group_send(
-            self.room_group_name,
-            {
-                "type": "send_mood",
-                "data": data
-            }
-        )
+        try:
+            data = json.loads(text_data)
+            message = data.get("message", "")
+            await self.send(text_data=json.dumps({
+                "message": message
+            }))
+        except json.JSONDecodeError:
+            await self.send(text_data=json.dumps({
+                "error": "Geçersiz veri formatı."
+            }))
 
     # Receive message from room group
     async def send_mood(self, event):
