@@ -13,9 +13,11 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from django.core.asgi import get_asgi_application
 from moods.routing.websocket_routing import websocket_urlpatterns
+from dotenv import load_dotenv
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "moodmap.settings")
+load_dotenv()
 django.setup()
 
 application = ProtocolTypeRouter({
